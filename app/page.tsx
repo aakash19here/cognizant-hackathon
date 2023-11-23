@@ -1,35 +1,22 @@
-// app/chat.tsx -- client component
-"use client";
+import { getPineconeClient } from "@/lib/pinecone";
+import Link from "next/link";
 
-import { useChat } from "ai/react";
+export const revalidate = 0;
 
-export default function MyComponent() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: "/api/chat",
-  });
+export default async function page() {
+  const client = await getPineconeClient();
+
+  const namespaces = (await client.Index("subjects").describeIndexStats())
+    .namespaces;
 
   return (
-    <div>
-      <ul>
-        {messages.map((m, index) => (
-          <li key={index}>
-            {m.role === "user" ? "User: " : "AI: "}
-            {m.content}
-          </li>
+    <p>
+      {namespaces &&
+        Object.keys(namespaces).map((namespace, i) => (
+          <Link href={`/${namespace}`} key={i} className="flex justify-between">
+            {namespace}
+          </Link>
         ))}
-      </ul>
-
-      <form onSubmit={handleSubmit}>
-        <label>
-          Say something...
-          <input
-            value={input}
-            onChange={handleInputChange}
-            className="bg-black text-white border-white"
-          />
-        </label>
-        <button type="submit">Send</button>
-      </form>
-    </div>
+    </p>
   );
 }
