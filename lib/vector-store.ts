@@ -28,7 +28,7 @@ export async function embedAndStoreDocs(
 }
 
 // Returns vector-store handle to be used a retrievers on langchains
-export async function getVectorStore(client: Pinecone) {
+export async function getVectorStore(client: Pinecone, namespace: string) {
   try {
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: env.OPEN_AI_API_KEY,
@@ -38,7 +38,7 @@ export async function getVectorStore(client: Pinecone) {
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",
-      namespace: "resume",
+      namespace: namespace,
     });
 
     return vectorStore;

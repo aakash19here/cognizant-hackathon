@@ -11,14 +11,19 @@ import { chatModel } from "./llm";
 type callChainArgs = {
   question: string;
   chatHistory: string;
+  namespace: string;
 };
 
-export async function callChain({ question, chatHistory }: callChainArgs) {
+export async function callChain({
+  question,
+  chatHistory,
+  namespace,
+}: callChainArgs) {
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getVectorStore(pineconeClient);
+    const vectorStore = await getVectorStore(pineconeClient, namespace);
     const { stream, handlers } = LangChainStream({
       experimental_streamData: true,
     });

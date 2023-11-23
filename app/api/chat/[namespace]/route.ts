@@ -8,7 +8,16 @@ const formatMessage = (message: Message) => {
   }`;
 };
 
-export async function POST(req: NextRequest) {
+type Params = {
+  params: {
+    namespace: string;
+  };
+};
+
+export async function POST(
+  req: NextRequest,
+  { params: { namespace } }: Params
+) {
   const body = await req.json();
   const messages: Message[] = body.messages ?? [];
   console.log("Messages ", messages);
@@ -27,6 +36,7 @@ export async function POST(req: NextRequest) {
     const streamingTextResponse = callChain({
       question,
       chatHistory: formattedPreviousMessages.join("\n"),
+      namespace: namespace,
     });
 
     return streamingTextResponse;
