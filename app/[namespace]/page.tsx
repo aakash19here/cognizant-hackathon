@@ -1,7 +1,5 @@
-"use client";
-
-import { useChat } from "ai/react";
-import { useEffect } from "react";
+import { getPineconeClient } from "@/lib/pinecone";
+import Chat from "./_components/client";
 
 type Params = {
   params: {
@@ -9,35 +7,16 @@ type Params = {
   };
 };
 
-export default function MyComponent({ params: { namespace } }: Params) {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: `/api/chat/${namespace}`,
-  });
+export default async function Namespace({ params: { namespace } }: Params) {
+  const client = await getPineconeClient();
 
-  console.log(namespace);
+  const namespaces = await client.Index("subjects").describeIndexStats();
+
+  console.log("fetched namespaces ", namespaces);
 
   return (
     <div>
-      <ul>
-        {messages.map((m, index) => (
-          <li key={index}>
-            {m.role === "user" ? "User: " : "AI: "}
-            {m.content}
-          </li>
-        ))}
-      </ul>
-
-      <form onSubmit={handleSubmit}>
-        <label>
-          Say something...
-          <input
-            value={input}
-            onChange={handleInputChange}
-            className="bg-black text-white border-white"
-          />
-        </label>
-        <button type="submit">Send</button>
-      </form>
+      <Chat namespace={namespace} />
     </div>
   );
 }

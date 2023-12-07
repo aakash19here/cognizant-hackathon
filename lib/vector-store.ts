@@ -6,7 +6,8 @@ import { Pinecone } from "@pinecone-database/pinecone";
 export async function embedAndStoreDocs(
   client: Pinecone,
   // @ts-ignore docs type error
-  docs: Document<Record<string, any>>[]
+  docs: Document<Record<string, any>>[],
+  namespace: string
 ) {
   /*create and store the embeddings in the vectorStore*/
   try {
@@ -18,8 +19,7 @@ export async function embedAndStoreDocs(
     //embed the PDF documents
     await PineconeStore.fromDocuments(docs, embeddings, {
       pineconeIndex: index,
-      namespace: "resume",
-      textKey: "text",
+      namespace: namespace,
     });
   } catch (error) {
     console.log("error ", error);
