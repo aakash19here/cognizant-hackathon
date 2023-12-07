@@ -1,16 +1,17 @@
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { env } from "./config";
 
-export async function getChunkedDocsFromPdf() {
+export async function getChunkedDocsFromPdf(path: string) {
   try {
-    const loader = new PDFLoader("docs/resume.pdf");
+    const loader = new PDFLoader(path);
 
     const docs = await loader.load();
 
     const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
+      chunkSize: 500,
+      chunkOverlap: 100,
+      // chunkSize: 256,
+      // chunkOverlap: 20,
     });
 
     const chunkedDocs = textSplitter.splitDocuments(docs);
