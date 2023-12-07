@@ -7,6 +7,7 @@ import {
   LangChainStream,
 } from "ai";
 import { chatModel } from "./llm";
+import { QA_TEMPLATE, STANDALONE_QUESTION_TEMPLATE } from "./prompts";
 
 type callChainArgs = {
   question: string;
@@ -31,8 +32,10 @@ export async function callChain({
 
     const chain = ConversationalRetrievalQAChain.fromLLM(
       chatModel,
-      vectorStore.asRetriever({}),
+      vectorStore.asRetriever(),
       {
+        qaTemplate: QA_TEMPLATE,
+        questionGeneratorTemplate: STANDALONE_QUESTION_TEMPLATE,
         returnSourceDocuments: true, //default 4
         questionGeneratorChainOptions: {
           llm: chatModel,
