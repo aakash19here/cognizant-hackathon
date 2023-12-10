@@ -13,7 +13,11 @@ export default async function page() {
     <p>
       {namespaces &&
         Object.keys(namespaces).map((namespace, i) => (
-          <Link href={`/${namespace}`} key={i} className="flex justify-between">
+          <Link
+            href={`/chat/${namespace}`}
+            key={i}
+            className="flex justify-between"
+          >
             {namespace}
           </Link>
         ))}

@@ -6,22 +6,22 @@ export type TNamespaces = {
 export const namespaces: TNamespaces = [
   // {
   //   name: "nextjs-cache",
-  //   path: `docs/nextjs-cache.pdf`,
+  //   path: `/docs/nextjs-cache.pdf`,
   // },
   // {
   //   name: "resume",
-  //   path: "docs/resume.pdf",
+  //   path: "/docs/resume.pdf",
   // },
   {
     name: "english",
-    path: "docs/english.pdf",
+    path: "/docs/english.pdf",
   },
   // {
   //   name: "history",
-  //   path: "docs/history-and-political-science.pdf",
+  //   path: "/docs/history-and-political-science.pdf",
   // },
   // {
   //   name: "biology",
-  //   path: "docs/science-and-technology-part-2.pdf",
+  //   path: "/docs/science-and-technology-part-2.pdf",
   // },
 ];
