@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useChat } from "ai/react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { getFilePath } from "@/lib/utils";
 
 interface IChatProps {
   namespace: string;
@@ -28,10 +29,7 @@ export function ChatClient({ namespace }: IChatProps) {
         </div>
         <div className="flex flex-1 py-2">
           <div className="grid gap-4 p-4 w-full">
-            <iframe
-              src="/docs/nextjs-caching.pdf"
-              className="w-full h-[85vh]"
-            />
+            <iframe src={getFilePath(namespace)} className="w-full h-[85vh]" />
           </div>
         </div>
       </div>
