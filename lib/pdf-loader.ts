@@ -7,11 +7,13 @@ export async function getChunkedDocsFromPdf(path: string) {
 
     const docs = await loader.load();
 
+    if (!docs || docs.length === 0) {
+      throw new Error("No documents were loaded from the PDF.");
+    }
+
     const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 500,
+      chunkSize: 1000,
       chunkOverlap: 100,
-      // chunkSize: 256,
-      // chunkOverlap: 20,
     });
 
     const chunkedDocs = textSplitter.splitDocuments(docs);

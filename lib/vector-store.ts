@@ -12,7 +12,7 @@ export async function embedAndStoreDocs(
   /*create and store the embeddings in the vectorStore*/
   try {
     const embeddings = new OpenAIEmbeddings({
-      openAIApiKey: env.OPEN_AI_API_KEY,
+      openAIApiKey: env.OPENAI_API_KEY,
     });
     const index = client.Index("subjects");
 
@@ -31,7 +31,7 @@ export async function embedAndStoreDocs(
 export async function getVectorStore(client: Pinecone, namespace: string) {
   try {
     const embeddings = new OpenAIEmbeddings({
-      openAIApiKey: env.OPEN_AI_API_KEY,
+      openAIApiKey: env.OPENAI_API_KEY,
     });
     const index = client.Index("subjects");
 
