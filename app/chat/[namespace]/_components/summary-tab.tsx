@@ -1,32 +1,38 @@
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useChat } from "ai/react";
-import React from "react";
+import React, { useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+const SKELETONS = Array.from({ length: 8 }, (_, i) => i + 1);
+
 export default function SummaryTab({ namespace }: { namespace: string }) {
-  const { messages, handleSubmit, setInput, isLoading } = useChat({
+  const { messages, handleSubmit } = useChat({
     api: `/api/summarize/${namespace}`,
+    initialInput: `
+    Summarize the given context. If the user is a single person so use He as the pronoun
+
+    Don't mention it as document anywhere. Use the context and name the thing
+    `,
+    onResponse: () => {
+      setIsLoading(false);
+    },
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    setInput(
-      `
-      Summarize the given context. If the user is a single person so use He as the pronoun
-
-      Don't mention it as document anywhere. Use the context and name the thing
-      `
-    );
-
-    handleSubmit(e);
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <TabsContent value="summarize">
       <div className="p-4">
-        <form onSubmit={(e) => onSubmit(e)}>
+        <form
+          onSubmit={(e) => {
+            setIsLoading(true);
+            handleSubmit(e);
+          }}
+        >
           <Button
             className={cn(
               (isLoading && "hidden") || (messages.length > 1 && "hidden")
@@ -36,6 +42,10 @@ export default function SummaryTab({ namespace }: { namespace: string }) {
           </Button>
         </form>
         <div className="px-4 pb-20 flex-1 overflow-y-hidden">
+          {isLoading &&
+            SKELETONS.map((id) => (
+              <Skeleton className="w-full my-5 h-[3vh]" key={id} />
+            ))}
           <ul className="">
             {messages
               .filter((m) => m.role === "assistant")

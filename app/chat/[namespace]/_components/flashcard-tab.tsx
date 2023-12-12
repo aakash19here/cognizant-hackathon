@@ -1,26 +1,34 @@
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useChat } from "ai/react";
-import React from "react";
+import React, { useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+const SKELETONS = Array.from({ length: 8 }, (_, i) => i + 1);
+
 export default function FlashcardTab({ namespace }: { namespace: string }) {
-  const { messages, handleSubmit, setInput, isLoading } = useChat({
+  const { messages, handleSubmit } = useChat({
     api: `/api/flashcard/${namespace}`,
+    initialInput: "Generate flash cards based on the context given to you.",
+    onResponse: () => {
+      setIsLoading(false);
+    },
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    setInput("Generate flash cards based on the context given to you.");
-
-    handleSubmit(e);
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <TabsContent value="flashcards">
       <div className="p-4">
-        <form onSubmit={(e) => onSubmit(e)}>
+        <form
+          onSubmit={(e) => {
+            setIsLoading(true);
+            handleSubmit(e);
+          }}
+        >
           <Button
             className={cn(
               (isLoading && "hidden") || (messages.length > 1 && "hidden")
@@ -30,6 +38,10 @@ export default function FlashcardTab({ namespace }: { namespace: string }) {
           </Button>
         </form>
         <div className="px-4 pb-20 flex-1 overflow-y-hidden">
+          {isLoading &&
+            SKELETONS.map((id) => (
+              <Skeleton className="w-full my-5 h-[3vh]" key={id} />
+            ))}
           <ul className="">
             {messages
               .filter((m) => m.role === "assistant")
