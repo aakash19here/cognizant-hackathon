@@ -25,9 +25,4 @@ export const namespaces: TNamespaces = [
     path: "docs/the-subtle-art.pdf",
     secondary_path: "/docs/the-subtle-art.pdf",
   },
-  {
-    name: "ikigai",
-    path: "docs/ikigai.pdf",
-    secondary_path: "/docs/ikigai.pdf",
-  },
 ];

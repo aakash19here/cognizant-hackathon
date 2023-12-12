@@ -11,15 +11,18 @@ import { useChat } from "ai/react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getFilePath } from "@/lib/utils";
+import SummaryTab from "./summary-tab";
+import FlashcardTab from "./flashcard-tab";
 
 interface IChatProps {
   namespace: string;
 }
 
 export function ChatClient({ namespace }: IChatProps) {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: `/api/chat/${namespace}`,
-  });
+  const { messages, input, setMessages, handleInputChange, handleSubmit } =
+    useChat({
+      api: `/api/chat/${namespace}`,
+    });
 
   return (
     <div className="grid h-screen w-full grid-cols-[1fr,1fr]">
@@ -38,7 +41,11 @@ export function ChatClient({ namespace }: IChatProps) {
           <h1 className="font-semibold text-lg">Interaction Modes</h1>
         </div>
         <div className="flex flex-1 py-2">
-          <Tabs className="w-full" defaultValue="chat">
+          <Tabs
+            className="w-full"
+            defaultValue="chat"
+            onValueChange={() => setMessages([])}
+          >
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="chat">Q&A</TabsTrigger>
               <TabsTrigger value="summarize">Summarize</TabsTrigger>
@@ -76,16 +83,9 @@ export function ChatClient({ namespace }: IChatProps) {
                 </div>
               </form>
             </TabsContent>
-            <TabsContent value="summarize">
-              <div className="p-4">
-                <Button>Generate Summary</Button>
-              </div>
-            </TabsContent>
-            <TabsContent value="flashcards">
-              <div className="p-4">
-                <Button>Generate Flashcards</Button>
-              </div>
-            </TabsContent>
+            <SummaryTab namespace={namespace} />
+
+            <FlashcardTab namespace={namespace} />
           </Tabs>
         </div>
       </div>

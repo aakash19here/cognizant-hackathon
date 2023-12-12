@@ -1,7 +1,7 @@
 ## Todo
 
-- [] Improve UI
-- [] Update ingestion script
-- [] Ingest books
+- [x] Improve UI
+- [x] Update ingestion script
+- [x] Ingest books
 - [x] Render PDF
-- [] Summary and flash card if possible
+- [x] Summary and flash card if possible
