@@ -10,6 +10,8 @@ import { getPineconeClient } from "@/lib/pinecone";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { chatModel } from "@/lib/llm";
 
+export const runtime = "edge";
+
 const formatMessage = (message: Message) => {
   return `${message.role === "user" ? "Human" : "Assistant"}: ${
     message.content
