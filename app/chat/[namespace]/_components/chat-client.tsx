@@ -1,18 +1,16 @@
 "use client";
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/JRVx6GfNwWA
- */
 
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Bot, Home, User } from "lucide-react";
 import { useChat } from "ai/react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getFilePath } from "@/lib/utils";
 import SummaryTab from "./summary-tab";
 import FlashcardTab from "./flashcard-tab";
+import Link from "next/link";
 
 interface IChatProps {
   namespace: string;
@@ -28,7 +26,12 @@ export function ChatClient({ namespace }: IChatProps) {
     <div className="grid h-screen w-full grid-cols-[1fr,1fr]">
       <div className="flex flex-col h-full border-r bg-gray-100/40 overflow-hidden">
         <div className="flex h-16 px-4 py-2 items-center border-b">
-          <h1 className="font-semibold text-lg">PDF Viewer</h1>
+          <h1 className="font-semibold text-lg flex gap-5">
+            <Link href={"/"}>
+              <Home />
+            </Link>
+            PDF Viewer
+          </h1>
         </div>
         <div className="flex flex-1 py-2">
           <div className="grid gap-4 p-4 w-full">
@@ -58,8 +61,11 @@ export function ChatClient({ namespace }: IChatProps) {
               <div className="px-4 pb-20 flex-1 overflow-y-hidden">
                 <ul className="">
                   {messages.map((m, index) => (
-                    <li key={index} className="overflow-y-auto">
-                      {m.role === "user" ? "User: " : "AI: "}
+                    <li
+                      key={index}
+                      className="flex items-start justify-start gap-2 my-5"
+                    >
+                      {m.role === "user" ? <User /> : <Bot />}
                       <Markdown remarkPlugins={[remarkGfm]} className="prose">
                         {m.content}
                       </Markdown>
